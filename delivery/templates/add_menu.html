@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Menu</title>
+    <style>
+        body {
+            background-color: #fce4ec;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #4a148c;
+            margin-bottom: 20px;
+        }
+        form {
+            background: #fff;
+            display: inline-block;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+            width: 350px;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #4a148c;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            margin-top: 20px;
+            background-color: #d81b60;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        table {
+            margin: auto;
+            border-collapse: collapse;
+            width: 90%;
+            background-color: #fff;
+            box-shadow: 0 0 10px #ccc;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+        th {
+            background-color: #f8bbd0;
+            color: #4a148c;
+        }
+        img {
+            border-radius: 10px;
+            width: 100px;
+            height: 80px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Menu Item for {{ restaurant.name }}</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="item_name">Item Name</label>
+        <input type="text" id="item_name" name="item_name" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="3" required></textarea>
+
+        <label for="price">Price</label>
+        <input type="number" id="price" name="price" step="0.01" required>
+
+        <label for="item_image">Image</label>
+        <input type="file" id="item_image" name="item_image" accept="image/*">
+
+        <button type="submit">Add Item</button>
+    </form>
+
+    <h2>Current Menu Items</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Picture</th>
+                <th>Item Name</th>
+                <th>Description</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in menu_items %}
+            <tr>
+                <td>
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}">
+                </td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.description }}</td>
+                <td>₹{{ item.price }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No items in the menu yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
