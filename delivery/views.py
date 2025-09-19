@@ -113,11 +113,12 @@ def delete_restaurant(request, restaurant_id):
 
 def add_menu(request, restaurant_id):
     restaurant = get_object_or_404(Restaurant, id=restaurant_id)
+
     if request.method == "POST":
-        name = request.POST['item_name']
-        desc = request.POST['description']
-        price = request.POST['price']
-        image = request.FILES.get('item_image')
+        name = request.POST.get('item_name')
+        desc = request.POST.get('description')
+        price = request.POST.get('price')
+        image = request.POST.get('picture')  # <- get URL
 
         MenuItem.objects.create(
             restaurant=restaurant,
@@ -126,7 +127,7 @@ def add_menu(request, restaurant_id):
             price=price,
             image=image
         )
-        # after saving, just continue to show same page
+        return redirect('add_menu', restaurant_id=restaurant.id)  # <- avoids resubmission
 
     menu_items = MenuItem.objects.filter(restaurant=restaurant)
     return render(request, 'add_menu.html', {

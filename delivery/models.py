@@ -16,13 +16,15 @@ class Restaurant(models.Model):
 
 class MenuItem(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='menu_items')
-    name = models.CharField(max_length=50)
-    description = models.TextField()
-    price = models.FloatField()
-    image = models.URLField(
-        max_length=300,
-        default="https://cdn-icons-png.flaticon.com/512/857/857681.png"
-    )
+    name = models.CharField(max_length=100)
+    description = models.TextField(null=True, blank=True)
+
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    image = models.URLField(default="https://example.com/default.jpg")
+
+
 
     def __str__(self):
         return f"{self.name} ({self.restaurant.name})"
+    # dummy change
+
